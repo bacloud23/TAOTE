@@ -1,4 +1,6 @@
-function BooleanStream() {
+import Generator from "./Generator.js"
+
+function TAOTE() {
 
     this.memory = {
         // put whatever you want in general
@@ -205,18 +207,6 @@ function BooleanStream() {
 }
 
 const exhaustion = 2 // Seconds we consider it Infinit already
-
-function* naturals() {
-    for (let index = 0; index < Infinity; index++) {
-        yield index
-    }
-}
-function* negatives() {
-    for (let index = 0; index < Infinity; index++) {
-        yield -index
-    }
-}
-
 const condition1 = (value) => value == 0 || value > 0
 const condition2 = (value) => value > 300
 const condition3 = (value) => value < 0
@@ -232,36 +222,40 @@ function process(value, memo) {
 }
 
 
-const booleanStream = new BooleanStream()
-// for (let n of booleanStream.repeater({ generator: naturals, round: 5 })) {
+const context = new TAOTE()
+// for (let n of context.repeater({ generator: naturals, round: 5 })) {
 //     console.log(n);
 // }
-
+const app = new Generator()
+const fib = app.fibonacci // function context detached
+// for (let val of fib(app)) {
+//     console.log(val)
+// }
 console.log('trying UNTIL')
-for (let n of booleanStream.until({ generator: naturals, condition: condition1, transform, process })) {
+for (let n of context.until({ generator: app.naturals, condition: condition1, transform, process })) {
     // console.log(n);
 }
 console.log('first memory')
-console.log(booleanStream.memory)
+console.log(context.memory)
 // Having memory, It is easy to rebuilt a retry scenario. A scenario similar to rebooting an app after a failure.
 // A retry scenario is to run the last operation with the same argumants once again but importantly building on the same previous or a new memory
-for (let n of booleanStream.retry(false)) {
+for (let n of context.retry(false)) {
     // console.log(n);
 }
 console.log('second memory')
-console.log(booleanStream.memory)
+console.log(context.memory)
 console.log('trying EVERY')
-for (let _every of booleanStream.every({ generator: naturals, condition: condition1 })) { console.log(_every) }
+for (let _every of context.every({ generator: app.naturals, condition: condition1 })) { console.log(_every) }
 
 console.log('trying SOME')
-for (let _some of booleanStream.some({ generator: naturals, condition: condition2 })) { console.log(_some) }
+for (let _some of context.some({ generator: app.naturals, condition: condition2 })) { console.log(_some) }
 
 console.log('trying SOME')
-for (let _some of booleanStream.some({ generator: naturals, condition: condition3 })) { console.log(_some) }
+for (let _some of context.some({ generator: app.naturals, condition: condition3 })) { console.log(_some) }
 
-let generatorA = naturals
-let generatorB = negatives
+let generatorA = app.naturals
+let generatorB = app.negatives
 console.log('trying AUntilB')
-for (let n of booleanStream.AUntilB({ generatorA, generatorB, conditionA: condition1, conditionB: condition4 })) {
+for (let n of context.AUntilB({ generatorA, generatorB, conditionA: condition1, conditionB: condition4 })) {
     // console.log(n);
 }
