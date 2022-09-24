@@ -1,6 +1,6 @@
 // This is an inplementation of our own, you would make your own generators with their
 // respective base
-function Generator() {
+function Generators() {
     // Used for recursive generators - where f(n,) is defined by f(n-1,), f(n-2,), ...
     this.base = [];
     this.fibonacci = function* fibonacci(self) {
@@ -17,12 +17,12 @@ function Generator() {
         }
     };
 
-    this.naturals = function* naturals() {
+    this.naturals = function* naturals(self) {
         let index = 0;
         while (true)
             yield index++;
     };
-    this.negatives = function* negatives() {
+    this.negatives = function* negatives(self) {
         let index = 0;
         while (true)
             yield index--;
@@ -30,14 +30,4 @@ function Generator() {
 
 }
 
-
-function Generator2() {
-    // Used for recursive generators - where f(n,) is defined by f(n-1,), f(n-2,), ...
-    this.base = [];
-    this.fibonacci = function fibonacci() {
-        console.log(this.base);
-        
-    };
-}
-
-export default Generator
+export default Generators
