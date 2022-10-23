@@ -170,3 +170,11 @@ But at the end, why is this ?
 There are a lot of studies in academia on how to test systems using temporal logic; But there is no easy and practical solutions implemented to my knowledge to be able to test everyday apps (like testing a web server, a web-app etc).   
 
 This could help test the behaviour of apps on edge cases; Something like: what happens to an app just before overflow, what is the state of the app when unexpected values are flowing from a stream, etc. This is obviously so much ambitious, but we will go easy to have something practicale for daily usage.
+
+### Next
+I am not sure what's next about this tiny library. In terms of needs, I don't know if people would start to test applications on the edges of execution (like start, restart and crash).  
+In academia I came across many resources about formal testing using different methods: Linear time logic, State machines and Bucci games, Graphes etc. But non is adapted in my opinion and to my knowledge to test daily apps, which do not need that level of formality.
+
+So what's next in terms of ideas?  
+- I have this idea to extend the classic **streams** consumption method **push & pull**, and add a new component [Intent, a whole different component ?! 
+](/README_intent.md)
