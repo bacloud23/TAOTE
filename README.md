@@ -21,6 +21,7 @@ Note in our example:
   
 Of course there are better ways to wrap and unwrap our future library (so yaaaaaaayyy). For instance `every` and `some` loops would be `every` and `some` themselves. For now, the tiny library is decoupled like the following
 
+### TAOTE library ( ͡ಠ ʖ̯ ͡ಠ)
 ```js
 // This is our library. It takes one application to test and some configurations (exhaustion for example)
 
@@ -65,7 +66,7 @@ function TAOTE({ app, exhaustion }) {
     
     // ... ... ... ... ... ... and so on ... we have some other stream operations
 ```
-
+### Example generators ( ಠ ʖ̯ ಠ) 
 ```js
 // Next we need some streams !! This is an inplementation of our own, you would make your own generators with their respective specificities
 function Generators() {
@@ -100,7 +101,7 @@ function Generators() {
 
 export default Generators
 ```
-
+### Test case ( ఠ ͟ʖ ఠ) 
 ```js
 // And now comes the MAIN we all should agree on ! You can see how TAOTE can be used (and you can suggest better ways !)
 import Generators from "./Generators.js"
