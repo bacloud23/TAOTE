@@ -1,4 +1,4 @@
-# Test Apps On The Edge
+# Test Applications On The Edge
 
 This is an attempt to test apps the time they bootstrap, crash or recover. To be able to deliver such practical solution, let's rephrase the previous phrase to the following:
 
