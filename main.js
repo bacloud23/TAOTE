@@ -1,37 +1,39 @@
-import Generators from "./Generators.js"
-import TAOTE from "./TAOTE.js"
+import Generators from "./Generators.js";
+import TAOTE from "./TAOTE.js";
 
-
-const exhaustion = 2 // Seconds we consider it Infinit already
-const condition1 = (value) => value == 0 || value > 0
-const condition2 = (value) => value > 300
-const condition3 = (value) => value < 0
-const condition4 = (value) => value < -300
+const exhaustion = 2; // Seconds we consider it Infinite already
+const condition1 = (value) => value == 0 || value > 0;
+const condition2 = (value) => value > 300;
+const condition3 = (value) => value < 0;
+const condition4 = (value) => value < -300;
 
 function transform(value) {
-    return value * 2
+  return value * 2;
 }
 
 function process(value, memo) {
-    // Do whatever and rely on memo.result to stack results
-    memo.result['sum'] = memo.result['sum'] ? (memo.result['sum'] + value) : 0
+  // Do whatever and rely on memo.result to stack results
+  memo.result["sum"] = memo.result["sum"] ? memo.result["sum"] + value : 0;
 }
 
-const app = new Generators()
-const context = new TAOTE({ app, exhaustion })
+const app = new Generators();
+const context = new TAOTE({ app, exhaustion });
+context.registerLifeCycle();
 // for (let n of context.repeater({ generator: naturals, round: 5 })) {
 //     console.log(n);
 // }
 
-const fib = app.fibonacci // function context detached
+const fib = app.fibonacci; // function context detached
 // for (let val of fib()) {
 //     console.log(val)
 // }
 
-console.log('trying UNTIL')
+console.log("trying UNTIL");
 for (let n of context.until({ generator: app.naturals, condition: condition1, transform, process })) {
-    // console.log(n);
+  // console.log(n);
 }
+
+/*
 console.log('first memory')
 console.log(context.memory)
 // Having memory, It is easy to rebuilt a retry scenario. A scenario similar to rebooting an app after a failure.
@@ -56,3 +58,4 @@ console.log('trying AUntilB')
 for (let n of context.AUntilB({ generatorA, generatorB, conditionA: condition1, conditionB: condition4 })) {
     // console.log(n);
 }
+*/
