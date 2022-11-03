@@ -22,7 +22,11 @@ context.registerLifeCycle();
 // for (let n of context.repeater({ generator: naturals, round: 5 })) {
 //     console.log(n);
 // }
+for await (let n of context.delayedGenerator({ generator: app.naturals })) {
+    console.log(n);
+}
 
+/*
 const fib = app.fibonacci; // function context detached
 // for (let val of fib()) {
 //     console.log(val)
@@ -33,7 +37,7 @@ for (let n of context.until({ generator: app.naturals, condition: condition1, tr
   // console.log(n);
 }
 
-/*
+
 console.log('first memory')
 console.log(context.memory)
 // Having memory, It is easy to rebuilt a retry scenario. A scenario similar to rebooting an app after a failure.

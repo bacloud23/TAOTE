@@ -23,6 +23,31 @@ Having a worker **A** in a Factory **F**; Let's assume **A** is a consumer of ta
     - **A** is unhappy about it if there is a delay
     - Before or after saying "enough" has no influence on **A** being Happy or unhappy
 
+```js
+  // 2nd case is just a generator
+  // 1st case is that generator with a timer (another generator)
+  
+  this.authority = function* authority(self) {
+    let delay = 1000;
+    while (true) {
+      yield new Promise((resolve) => {
+        setTimeout(resolve, delay);
+      });
+    }
+  };
+
+  this.delayedGenerator = async function* ({ generator }) {
+    const combined = (function* (genA, genB) {
+      let nextGenA, nextGenB;
+      while (!(nextGenA = genA.next()).done && !(nextGenB = genB.next()).done) {
+        yield { a: nextGenA.value, b: nextGenB.value };
+      }
+    })(generator(), this.authority());
+    for (let wee_wee of combined) {
+      yield Promise.all([wee_wee.a, wee_wee.b])
+    }
+  };
+```
 
 To simplify, you can view the first case as *Responsibility* and the second as a *Game*. You can see we introduced a whole new view of *consuming vs. producing* streams. In contrast to the classic *pull vs. push* approach.
 

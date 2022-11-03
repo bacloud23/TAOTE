@@ -16,6 +16,7 @@ function TAOTE({ app, exhaustion }) {
       setTimeout(resolve, ms);
     });
   };
+
   // Can be used to address back-pressure
   this.rateLimit = async function* ({ generator, delay }) {
     for (let val of generator(this.app)) {
@@ -218,6 +219,27 @@ function TAOTE({ app, exhaustion }) {
     console.log("done");
   };
 
+
+  this.authority = function* authority(self) {
+    let delay = 1000;
+    while (true) {
+      yield new Promise((resolve) => {
+        setTimeout(resolve, delay);
+      });
+    }
+  };
+  this.delayedGenerator = async function* ({ generator }) {
+    const combined = (function* (genA, genB) {
+      let nextGenA, nextGenB;
+      while (!(nextGenA = genA.next()).done && !(nextGenB = genB.next()).done) {
+        yield { a: nextGenA.value, b: nextGenB.value };
+      }
+    })(generator(), this.authority());
+    for (let wee_wee of combined) {
+      yield Promise.all([wee_wee.a, wee_wee.b])
+    }
+  };
+
   this.registerLifeCycle = function registerLifeCycle() {
     //do something when app is closing
     process.on("exit", exitHandler.bind(null, { cleanup: true, app: this }));
@@ -230,14 +252,14 @@ function TAOTE({ app, exhaustion }) {
     process.on("SIGUSR2", exitHandler.bind(null, { exit: true, app: this }));
 
     //catches uncaught exceptions
-    process.on("uncaughtException", exitHandler.bind(null, { exit: true, app }));
+    process.on("uncaughtException", exitHandler.bind(null, { exit: true, app: this }));
   };
 }
 
 process.stdin.resume(); //so the program will not close instantly
 
 function exitHandler(options, exitCode) {
-  console.log(`Dealing with latest ${options.app.last.op}`);
+  console.log(`Last operation "${options.app.last.op}" has been stopped unexpectedly`);
   if (options.cleanup) console.log("clean");
 
   if (exitCode || exitCode === 0) console.log(exitCode);
